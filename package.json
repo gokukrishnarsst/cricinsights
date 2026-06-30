@@ -1,0 +1,37 @@
+{
+  "name": "@cricket-ai/source",
+  "version": "0.0.0",
+  "license": "MIT",
+  "packageManager": "pnpm@10.11.1",
+  "private": true,
+  "scripts": {
+    "build": "nx run-many --target=build",
+    "typecheck": "nx run-many --target=typecheck",
+    "synth": "nx run-many --target=synth",
+    "diff": "nx run-many --target=diff",
+    "deploy": "nx run-many --target=deploy",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "db:reset": "docker compose down -v && docker compose up -d postgres",
+    "db:migrate": "docker compose up -d postgres && nx run database:migrate-local",
+    "db:logs": "docker compose logs -f postgres",
+    "db:ps": "docker compose ps"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.260.0",
+    "constructs": "^10.6.0"
+  },
+  "devDependencies": {
+    "@nx/js": "23.0.0",
+    "@nx/workspace": "23.0.0",
+    "@nx/eslint": "^23.0.0",
+    "@types/node": "^22.0.0",
+    "@types/aws-lambda": "^8.10.162",
+    "aws-cdk": "^2.1128.1",
+    "eslint": "^9.8.0",
+    "nx": "23.0.0",
+    "prettier": "^3.8.1",
+    "tsx": "^4.22.4",
+    "typescript": "~5.9.2"
+  }
+}

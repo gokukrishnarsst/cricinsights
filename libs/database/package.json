@@ -1,0 +1,41 @@
+{
+  "name": "@cricket-ai/database",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@cricket-ai/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "nx": {
+    "name": "database",
+    "tags": [
+      "type:lib",
+      "scope:database"
+    ],
+    "targets": {
+      "migrate-local": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "docker compose --profile tools run --rm flyway",
+          "cwd": "{workspaceRoot}"
+        }
+      },
+      "db-up": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "docker compose up -d postgres",
+          "cwd": "{workspaceRoot}"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "name": "@cricket-ai/infra",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "nx": {
+    "name": "infra",
+    "tags": [
+      "type:app",
+      "scope:infra"
+    ],
+    "targets": {
+      "synth": {
+        "executor": "nx:run-commands",
+        "dependsOn": [
+          {
+            "projects": "db-migrate-lambda",
+            "target": "build-image"
+          }
+        ],
+        "options": {
+          "cwd": "apps/infra",
+          "command": "cdk synth"
+        }
+      },
+      "diff": {
+        "executor": "nx:run-commands",
+        "dependsOn": [
+          {
+            "projects": "db-migrate-lambda",
+            "target": "build-image"
+          }
+        ],
+        "options": {
+          "cwd": "apps/infra",
+          "command": "cdk diff"
+        }
+      },
+      "deploy": {
+        "executor": "nx:run-commands",
+        "dependsOn": [
+          {
+            "projects": "db-migrate-lambda",
+            "target": "build-image"
+          }
+        ],
+        "options": {
+          "cwd": "apps/infra",
+          "command": "cdk deploy --require-approval never"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@cricket-ai/database": "workspace:*",
+    "aws-cdk-lib": "^2.260.0",
+    "constructs": "^10.6.0"
+  }
+}

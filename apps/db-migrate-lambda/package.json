@@ -1,0 +1,27 @@
+{
+  "name": "@cricket-ai/db-migrate-lambda",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "name": "db-migrate-lambda",
+    "tags": [
+      "type:app",
+      "scope:infra"
+    ],
+    "targets": {
+      "build-image": {
+        "executor": "nx:run-commands",
+        "outputs": [
+          "{projectRoot}/dist/handler.js"
+        ],
+        "options": {
+          "command": "tsc -p tsconfig.app.json",
+          "cwd": "apps/db-migrate-lambda"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.600.0"
+  }
+}
