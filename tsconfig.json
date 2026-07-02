@@ -10,6 +10,12 @@
       "path": "./apps/db-migrate-lambda"
     },
     {
+      "path": "./apps/cricinsights"
+    },
+    {
+      "path": "./apps/waitlist-api"
+    },
+    {
       "path": "./libs/database"
     }
   ]

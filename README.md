@@ -18,15 +18,18 @@ Cricket AI is an [Nx](https://nx.dev) monorepo for a cricket data platform. It p
 │    └── private subnets                                           │
 │          ├── Aurora PostgreSQL 16 (Serverless v2)                │
 │          ├── Migrate Lambda (Docker + Flyway)                    │
+│          ├── Waitlist API Lambda (Function URL)                  │
 │          └── VPC endpoints (Secrets Manager, Logs, ECR, S3)    │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
 | Project | Path | Role |
 |---------|------|------|
-| `infra` | `apps/infra` | AWS CDK stack (network, database, migrations) |
+| `infra` | `apps/infra` | AWS CDK stack (network, database, migrations, waitlist API) |
 | `db-migrate-lambda` | `apps/db-migrate-lambda` | Lambda handler that runs Flyway against Aurora |
-| `database` | `libs/database` | Shared DB naming helpers and Flyway SQL migrations |
+| `waitlist-api` | `apps/waitlist-api` | VPC Lambda for waitlist signups in AWS |
+| `cricinsights` | `apps/cricinsights` | Next.js web app (CricInsights landing + local waitlist API) |
+| `database` | `libs/database` | Shared DB helpers, client, and Flyway SQL migrations |
 
 ## Prerequisites
 
@@ -49,6 +52,7 @@ pnpm typecheck
 pnpm build
 pnpm db:up
 pnpm db:migrate
+pnpm dev:web                 # CricInsights at http://localhost:4200
 ```
 
 ## Project structure
@@ -56,6 +60,8 @@ pnpm db:migrate
 ```text
 Cricket-AI/
 ├── apps/
+│   ├── cricinsights/          # Next.js landing + waitlist API (local)
+│   ├── waitlist-api/          # Waitlist Lambda handler (AWS)
 │   ├── infra/                 # CDK app (bin/, lib/constructs/)
 │   └── db-migrate-lambda/     # Migration Lambda (Docker image)
 ├── libs/
@@ -108,6 +114,8 @@ If `5433` is taken, set `DATABASE_PORT` in `.env` (for example `5434`) before ru
 | `DATABASE_USER` | `cricketadmin` | Database user |
 | `DATABASE_PASSWORD` | `cricketadmin` | Database password (local only) |
 | `DATABASE_URL` | — | Full connection string (optional convenience) |
+| `OPENAI_API_KEY` | — | OpenAI API key for future CricInsights AI features |
+| `NEXT_PUBLIC_WAITLIST_API_URL` | — | Lambda Function URL in production (omit locally) |
 
 Copy `.env.example` to `.env` for local work. Do not commit `.env`.
 
@@ -164,6 +172,8 @@ pnpm nx graph                  # Visualize project graph
 pnpm nx run database:build
 pnpm nx run database:migrate-local
 pnpm nx run db-migrate-lambda:build-image
+pnpm nx run waitlist-api:build
+pnpm nx run cricinsights:build
 pnpm nx run infra:typecheck
 pnpm nx run infra:synth
 ```
@@ -177,6 +187,7 @@ pnpm nx run infra:synth
 | `pnpm synth` | CDK synth (all infra targets) |
 | `pnpm diff` | CDK diff |
 | `pnpm deploy` | CDK deploy |
+| `pnpm dev:web` | Start CricInsights Next.js dev server |
 
 ## License
 

@@ -1,0 +1,31 @@
+{
+  "name": "@cricket-ai/waitlist-api",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "nx": {
+    "name": "waitlist-api",
+    "tags": [
+      "type:app",
+      "scope:api"
+    ],
+    "targets": {
+      "build": {
+        "executor": "nx:run-commands",
+        "outputs": [
+          "{projectRoot}/dist/handler.js"
+        ],
+        "options": {
+          "command": "tsc -p tsconfig.app.json",
+          "cwd": "apps/waitlist-api"
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "@cricket-ai/database": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.162"
+  }
+}

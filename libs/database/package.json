@@ -37,5 +37,12 @@
         }
       }
     }
+  },
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.1075.0",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.20.0"
   }
 }

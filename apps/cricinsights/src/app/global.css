@@ -1,0 +1,160 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-navy: #0a1628;
+  --color-navy-light: #132238;
+  --color-blue-deep: #1e3a8a;
+  --color-blue: #2563eb;
+  --color-blue-light: #60a5fa;
+  --color-sky: #93c5fd;
+  --color-frost: #f0f7ff;
+  --font-display: 'Georgia', 'Times New Roman', serif;
+  --font-body: system-ui, -apple-system, sans-serif;
+}
+
+@keyframes drift-a {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(4%, -6%) scale(1.08);
+  }
+  66% {
+    transform: translate(-3%, 4%) scale(0.96);
+  }
+}
+
+@keyframes drift-b {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-5%, -4%) scale(1.12);
+  }
+}
+
+@keyframes drift-c {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  40% {
+    transform: translate(6%, 5%) scale(1.05);
+  }
+  80% {
+    transform: translate(-4%, -2%) scale(0.94);
+  }
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-navy);
+  color: var(--color-frost);
+}
+
+.bg-animated {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(37, 99, 235, 0.35), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 80% 20%, rgba(96, 165, 250, 0.2), transparent 55%),
+    radial-gradient(ellipse 60% 70% at 50% 90%, rgba(30, 58, 138, 0.4), transparent 60%),
+    linear-gradient(160deg, #0a1628 0%, #0f2744 40%, #0a1628 100%);
+}
+
+.bg-orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.bg-orb-a {
+  top: -10%;
+  left: -5%;
+  width: 55vw;
+  height: 55vw;
+  background: rgba(37, 99, 235, 0.25);
+  animation: drift-a 18s ease-in-out infinite;
+}
+
+.bg-orb-b {
+  top: 30%;
+  right: -10%;
+  width: 45vw;
+  height: 45vw;
+  background: rgba(96, 165, 250, 0.18);
+  animation: drift-b 22s ease-in-out infinite;
+}
+
+.bg-orb-c {
+  bottom: -15%;
+  left: 25%;
+  width: 50vw;
+  height: 50vw;
+  background: rgba(147, 197, 253, 0.12);
+  animation: drift-c 26s ease-in-out infinite;
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+  animation: shimmer 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-orb-a,
+  .bg-orb-b,
+  .bg-orb-c,
+  .bg-grid {
+    animation: none;
+  }
+
+  .typing-dot {
+    animation: none;
+    opacity: 0.6;
+  }
+}
+
+@keyframes typing-bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+  30% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+.typing-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background-color: var(--color-sky);
+  animation: typing-bounce 1.2s ease-in-out infinite;
+}
+
+.typing-dot-delay-1 {
+  animation-delay: 0.15s;
+}
+
+.typing-dot-delay-2 {
+  animation-delay: 0.3s;
+}

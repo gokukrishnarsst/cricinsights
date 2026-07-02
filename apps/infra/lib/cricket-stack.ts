@@ -4,6 +4,7 @@ import { databaseNameForEnv } from '@cricket-ai/database';
 import { Network } from './constructs/network.js';
 import { Database } from './constructs/database.js';
 import { DatabaseMigrate } from './constructs/database-migrate.js';
+import { WaitlistApi } from './constructs/waitlist-api.js';
 
 export interface CricketStackProps extends cdk.StackProps {
   envName: string;
@@ -26,6 +27,16 @@ export class CricketStack extends cdk.Stack {
     });
 
     new DatabaseMigrate(this, 'DatabaseMigrate', {
+      vpc: network.vpc,
+      vpcSubnets: network.privateSubnetSelection,
+      lambdaSecurityGroup: network.lambdaSecurityGroup,
+      databaseSecret: database.secret,
+      databaseCluster: database.cluster,
+      databaseEndpoint: database.cluster.clusterEndpoint.hostname,
+      databaseName: dbName,
+    });
+
+    new WaitlistApi(this, 'WaitlistApi', {
       vpc: network.vpc,
       vpcSubnets: network.privateSubnetSelection,
       lambdaSecurityGroup: network.lambdaSecurityGroup,
