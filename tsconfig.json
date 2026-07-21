@@ -17,6 +17,18 @@
     },
     {
       "path": "./libs/database"
+    },
+    {
+      "path": "./libs/mcp-server"
+    },
+    {
+      "path": "./libs/insight-engine"
+    },
+    {
+      "path": "./libs/ai-agent"
+    },
+    {
+      "path": "./libs/smart-router"
     }
   ]
 }

@@ -1,0 +1,33 @@
+{
+  "name": "@cricket-ai/ai-agent",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@cricket-ai/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "nx": {
+    "name": "ai-agent",
+    "tags": [
+      "type:lib",
+      "scope:ai"
+    ]
+  },
+  "dependencies": {
+    "@aws-sdk/client-bedrock-agent-runtime": "^3.1075.0",
+    "@aws-sdk/client-bedrock-runtime": "^3.1075.0",
+    "@smithy/node-http-handler": "^4.9.6",
+    "@cricket-ai/database": "workspace:*",
+    "@cricket-ai/mcp-server": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.25.0"
+  }
+}

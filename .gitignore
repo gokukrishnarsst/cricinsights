@@ -12,6 +12,9 @@ cdk.out
 .env
 .env.local
 
+# large raw db introspection snapshots (regenerate via dbms/introspection/run-introspection.sh)
+dbms/snapshots/*.raw.json
+
 # dependencies
 node_modules
 

@@ -1,0 +1,35 @@
+{
+  "name": "@cricket-ai/insight-engine",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "cricket-insight-engine": "./dist/cli.js"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@cricket-ai/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "nx": {
+    "name": "insight-engine",
+    "tags": [
+      "type:lib",
+      "scope:insights"
+    ]
+  },
+  "dependencies": {
+    "@cricket-ai/database": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.20.0",
+    "pg": "^8.22.0"
+  }
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 820">
+  <defs>
+    <linearGradient id="leather" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dbeafe"/>
+      <stop offset="45%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </linearGradient>
+    <pattern id="seam" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+      <line x1="0" y1="0" x2="0" y2="24" stroke="rgba(255,255,255,0.08)" stroke-width="4"/>
+    </pattern>
+    <filter id="innerShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(0,0,0,0.25)"/>
+    </filter>
+  </defs>
+  <path d="M270 24 C392 24 478 108 498 248 L512 698 C514 748 480 792 430 808 L270 818 L110 808 C60 792 26 748 28 698 L42 248 C62 108 148 24 270 24 Z" fill="url(#leather)" filter="url(#innerShadow)"/>
+  <path d="M270 24 C392 24 478 108 498 248 L512 698 C514 748 480 792 430 808 L270 818 L110 808 C60 792 26 748 28 698 L42 248 C62 108 148 24 270 24 Z" fill="url(#seam)" opacity="0.55"/>
+  
+  <g opacity="0.09" fill="none" stroke="#0e1526" stroke-width="6" stroke-linecap="round">
+    <line x1="230" y1="520" x2="230" y2="680"/>
+    <line x1="270" y1="500" x2="270" y2="680"/>
+    <line x1="310" y1="520" x2="310" y2="680"/>
+    <line x1="218" y1="680" x2="322" y2="680"/>
+  </g>
+  
+  <path d="M80 180 Q270 220 460 180" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" stroke-dasharray="8 10"/>
+  <path d="M70 420 Q270 460 470 420" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="2" stroke-dasharray="6 8"/>
+  <path d="M90 600 Q270 640 450 600" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2" stroke-dasharray="8 10"/>
+  <path d="M270 24 C392 24 478 108 498 248 L512 698 C514 748 480 792 430 808 L270 818 L110 808 C60 792 26 748 28 698 L42 248 C62 108 148 24 270 24 Z" fill="none" stroke="#2563eb" stroke-width="4" opacity="0.65"/>
+  
+  <rect x="88" y="268" width="80" height="48" rx="8" fill="rgba(255,255,255,0.35)" stroke="rgba(14,21,38,0.15)" stroke-width="2"/>
+  <text x="128" y="300" text-anchor="middle" font-family="system-ui,sans-serif" font-size="14" font-weight="700" fill="rgba(14,21,38,0.35)">LEAGUE</text>
+</svg>

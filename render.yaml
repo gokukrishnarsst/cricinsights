@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: cricket-ai-mcp
+    runtime: node
+    plan: free
+    buildCommand: pnpm install --frozen-lockfile && pnpm nx build mcp-server
+    startCommand: pnpm mcp:http:start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MCP_HTTP_PATH
+        value: /mcp

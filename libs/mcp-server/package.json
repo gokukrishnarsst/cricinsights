@@ -1,0 +1,34 @@
+{
+  "name": "@cricket-ai/mcp-server",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "cricket-mcp-server": "./dist/standalone.js",
+    "cricket-mcp-http-server": "./dist/http.js"
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "@cricket-ai/source": "./src/index.ts",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "nx": {
+    "name": "mcp-server",
+    "tags": [
+      "type:lib",
+      "scope:mcp"
+    ]
+  },
+  "dependencies": {
+    "@cricket-ai/database": "workspace:*",
+    "@modelcontextprotocol/sdk": "^1.25.0",
+    "zod": "^3.25.76"
+  }
+}

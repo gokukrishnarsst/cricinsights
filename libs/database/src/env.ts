@@ -21,3 +21,29 @@ export function databaseUrlFromEnv(env: NodeJS.ProcessEnv = process.env): string
 
   return `postgresql://${user}:${password}@${host}:${port}/${name}`;
 }
+
+/**
+ * Read-only connection string for cricket data queries.
+ * Prefers REMOTE_DATABASE_URL (Aurora read user) when set, otherwise DATABASE_URL.
+ */
+export function readDatabaseUrlFromEnv(env: NodeJS.ProcessEnv = process.env): string {
+  const remoteUrl = env.REMOTE_DATABASE_URL?.trim();
+  if (remoteUrl) {
+    return remoteUrl;
+  }
+
+  return databaseUrlFromEnv(env);
+}
+
+/** Redact password in a connection URL for safe logging. */
+export function redactDatabaseUrl(url: string): string {
+  try {
+    const parsed = new URL(url);
+    if (parsed.password) {
+      parsed.password = '****';
+    }
+    return parsed.toString();
+  } catch {
+    return url.replace(/:[^:@/]+@/, ':****@');
+  }
+}

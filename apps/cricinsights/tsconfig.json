@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "baseUrl": ".",
     "jsx": "preserve",
     "noEmit": true,
     "emitDeclarationOnly": false,
@@ -8,6 +9,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
+    "customConditions": [],
     "lib": [
       "dom",
       "dom.iterable",
@@ -25,6 +27,18 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@cricket-ai/database": [
+        "../../libs/database/dist/index.js"
+      ],
+      "@cricket-ai/mcp-server": [
+        "../../libs/mcp-server/dist/index.js"
+      ],
+      "@cricket-ai/smart-router": [
+        "../../libs/smart-router/dist/index.js"
+      ],
+      "@cricket-ai/ai-agent": [
+        "../../libs/ai-agent/dist/index.js"
       ]
     },
     "outDir": "dist",
@@ -55,7 +69,16 @@
   ],
   "references": [
     {
+      "path": "../../libs/smart-router"
+    },
+    {
+      "path": "../../libs/mcp-server"
+    },
+    {
       "path": "../../libs/database"
+    },
+    {
+      "path": "../../libs/ai-agent"
     }
   ]
 }

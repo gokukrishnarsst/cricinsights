@@ -3,13 +3,19 @@ import {
   SecretsManagerClient,
 } from '@aws-sdk/client-secrets-manager';
 import pg from 'pg';
-import { databaseUrlFromEnv } from './env';
+import {
+  databaseUrlFromEnv,
+  readDatabaseUrlFromEnv,
+  redactDatabaseUrl,
+} from './env.js';
+import { buildPoolConfig, connectionNeedsSsl } from './ssl.js';
 
 const secrets = new SecretsManagerClient({});
 
-let pool: pg.Pool | undefined;
+let writePool: pg.Pool | undefined;
+let readPool: pg.Pool | undefined;
 
-async function resolveDatabaseUrl(): Promise<string> {
+async function resolveWriteDatabaseUrl(): Promise<string> {
   const directUrl = process.env.DATABASE_URL;
   if (directUrl) {
     return directUrl;
@@ -46,19 +52,55 @@ async function resolveDatabaseUrl(): Promise<string> {
   return databaseUrlFromEnv();
 }
 
+function resolveReadDatabaseUrl(): string {
+  return readDatabaseUrlFromEnv();
+}
+
+function logPoolTarget(kind: 'read' | 'write', url: string): void {
+  const source =
+    kind === 'read' && process.env.REMOTE_DATABASE_URL?.trim()
+      ? 'REMOTE_DATABASE_URL'
+      : 'DATABASE_URL';
+  const sslNote = connectionNeedsSsl(url) ? ', ssl=verify (RDS CA)' : '';
+  console.log(
+    `[database] ${kind} pool → ${redactDatabaseUrl(url)} (via ${source}${sslNote})`,
+  );
+}
+
+/** Write-capable pool (local Docker, Aurora writer, waitlist, migrations). */
 export async function getPool(): Promise<pg.Pool> {
-  if (pool) {
-    return pool;
+  if (writePool) {
+    return writePool;
   }
 
-  const connectionString = await resolveDatabaseUrl();
-  pool = new pg.Pool({ connectionString });
-  return pool;
+  const connectionString = await resolveWriteDatabaseUrl();
+  logPoolTarget('write', connectionString);
+  writePool = new pg.Pool(buildPoolConfig(connectionString));
+  return writePool;
+}
+
+/**
+ * Read-only pool for cricket queries (MCP tools, Fast Path API, AI agent).
+ * Uses REMOTE_DATABASE_URL when configured, otherwise falls back to DATABASE_URL.
+ */
+export async function getReadPool(): Promise<pg.Pool> {
+  if (readPool) {
+    return readPool;
+  }
+
+  const connectionString = resolveReadDatabaseUrl();
+  logPoolTarget('read', connectionString);
+  readPool = new pg.Pool(buildPoolConfig(connectionString));
+  return readPool;
 }
 
 export async function closePool(): Promise<void> {
-  if (pool) {
-    await pool.end();
-    pool = undefined;
+  if (writePool) {
+    await writePool.end();
+    writePool = undefined;
+  }
+  if (readPool) {
+    await readPool.end();
+    readPool = undefined;
   }
 }

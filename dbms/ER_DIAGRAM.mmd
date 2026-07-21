@@ -1,0 +1,414 @@
+%% master schema (summary — see ER_DIAGRAM.md for full docs)
+erDiagram
+  continents {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    text name
+    timestamptz api_updated_at
+    bool is_active
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  countries {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 continent_id
+    text name
+    text image_path
+    timestamptz api_updated_at
+    bool is_active
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  leagues {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 active_season_id
+    int8 country_id
+    text name
+    text code
+    text image_path
+    text league_type
+    timestamptz api_updated_at
+    text _3_more_columns
+  }
+  legends {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 stage_id
+    int8 season_id
+    int8 league_id
+    int4 position
+    text description
+    timestamptz api_updated_at
+    timestamptz created_at
+    text _1_more_columns
+  }
+  officials {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 country_id
+    text firstname
+    text lastname
+    text fullname
+    date dateofbirth
+    text gender
+    timestamptz api_updated_at
+    text _3_more_columns
+  }
+  player_career_stats {
+    int8 id
+    uuid uuid
+    int8 player_id
+    int8 season_id
+    text format_type
+    int4 batting_matches
+    int4 batting_innings
+    int4 batting_runs
+    int4 batting_not_outs
+    int4 batting_highest_score
+    text _27_more_columns
+  }
+  players {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 country_id
+    int8 position_id
+    text firstname
+    text lastname
+    text fullname
+    text image_path
+    date dateofbirth
+    text _7_more_columns
+  }
+  positions {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    text name
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  score_outcomes {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    text name
+    int4 runs
+    bool is_four
+    bool is_six
+    int4 bye
+    int4 leg_bye
+    int4 noball
+    text _7_more_columns
+  }
+  scoreboard_innings {
+    text code
+    int2 inning_number
+    text description
+  }
+  seasons {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 league_id
+    text name
+    text code
+    timestamptz api_updated_at
+    bool is_active
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  stages {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 league_id
+    int8 season_id
+    text name
+    text code
+    text stage_type
+    bool has_standings
+    timestamptz api_updated_at
+    text _2_more_columns
+  }
+  standings {
+    int8 id
+    uuid uuid
+    int8 team_id
+    int8 stage_id
+    int8 season_id
+    int8 league_id
+    int8 legend_id
+    int4 position
+    int4 points
+    int4 played
+    text _13_more_columns
+  }
+  team_rankings {
+    int8 id
+    uuid uuid
+    text format_type
+    text gender
+    int8 team_id
+    int4 position
+    numeric points
+    numeric rating
+    timestamptz api_updated_at
+    timestamptz created_at
+    text _1_more_columns
+  }
+  team_squad_members {
+    int8 id
+    uuid uuid
+    int8 team_id
+    int8 player_id
+    int8 season_id
+    timestamptz api_updated_at
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  teams {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 country_id
+    text name
+    text code
+    text image_path
+    bool national_team
+    timestamptz api_updated_at
+    bool is_active
+    text _2_more_columns
+  }
+  venues {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 country_id
+    text name
+    text city
+    text image_path
+    int4 capacity
+    bool floodlight
+    timestamptz api_updated_at
+    text _3_more_columns
+  }
+  continents ||--o{ countries : "continent_id"
+  seasons ||--o{ leagues : "active_season_id"
+  countries ||--o{ leagues : "country_id"
+  leagues ||--o{ legends : "league_id"
+  seasons ||--o{ legends : "season_id"
+  stages ||--o{ legends : "stage_id"
+  countries ||--o{ officials : "country_id"
+  players ||--o{ player_career_stats : "player_id"
+  seasons ||--o{ player_career_stats : "season_id"
+  countries ||--o{ players : "country_id"
+  positions ||--o{ players : "position_id"
+  leagues ||--o{ seasons : "league_id"
+  leagues ||--o{ stages : "league_id"
+  seasons ||--o{ stages : "season_id"
+  leagues ||--o{ standings : "league_id"
+  legends ||--o{ standings : "legend_id"
+  seasons ||--o{ standings : "season_id"
+  stages ||--o{ standings : "stage_id"
+  teams ||--o{ standings : "team_id"
+  teams ||--o{ team_rankings : "team_id"
+  players ||--o{ team_squad_members : "player_id"
+  seasons ||--o{ team_squad_members : "season_id"
+  teams ||--o{ team_squad_members : "team_id"
+  countries ||--o{ teams : "country_id"
+  countries ||--o{ venues : "country_id"
+
+%% matches schema — aligns with data team diagram (summary)
+%% Full columns: ER_DIAGRAM_MATCHES_FULL.mmd | Aliases: DATA_TEAM_ALIGNMENT.md
+erDiagram
+  fixture_balls {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 fixture_id
+    int8 team_id
+    numeric ball_number
+    text scoreboard
+    int8 batsman_striker_id
+    int8 batsman_non_striker_id
+    int8 batsman_scorer_id
+    int8 bowler_id
+    int8 batsman_out_id
+    text _6_more_columns
+  }
+  fixture_batting {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 fixture_id
+    int8 team_id
+    int8 player_id
+    int4 sort_order
+    bool is_active
+    text scoreboard
+    int4 runs_scored
+    int4 balls_faced
+    int4 fours
+    text _13_more_columns
+  }
+  fixture_bowling {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 fixture_id
+    int8 team_id
+    int8 player_id
+    int4 sort_order
+    bool is_active
+    text scoreboard
+    numeric overs
+    int4 maidens
+    int4 runs_conceded
+    text _7_more_columns
+  }
+  fixture_inning_overs {
+    int8 id
+    uuid uuid
+    int8 fixture_id
+    int8 team_id
+    text scoreboard
+    int4 over_number
+    int4 runs_in_over
+    int4 wickets_in_over
+    int8 bowler_id
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  fixture_lineups {
+    int8 id
+    uuid uuid
+    int8 fixture_id
+    int8 team_id
+    int8 player_id
+    bool is_captain
+    bool is_wicketkeeper
+    bool is_substitute
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  fixture_odds {
+    int8 id
+    uuid uuid
+    int8 fixture_id
+    jsonb odds_json
+    timestamptz api_updated_at
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  fixture_runs {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 fixture_id
+    int8 team_id
+    int2 inning
+    int4 score
+    int4 wickets
+    numeric overs
+    text powerplay_1
+    text powerplay_2
+    text powerplay_3
+    text _3_more_columns
+  }
+  fixture_scoreboards {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 fixture_id
+    int8 team_id
+    text scoreboard
+    text board_type
+    int4 wides
+    int4 noball_runs
+    int4 noball_balls
+    int4 byes
+    int4 leg_byes
+    text _7_more_columns
+  }
+  fixture_weather {
+    int8 id
+    uuid uuid
+    int8 fixture_id
+    int2 report_sequence
+    jsonb weather_json
+    timestamptz api_updated_at
+    timestamptz created_at
+  }
+  fixtures {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 league_id
+    int8 season_id
+    int8 stage_id
+    text round
+    int8 localteam_id
+    int8 visitorteam_id
+    timestamptz starting_at
+    text match_format
+    bool is_live
+    text status
+    text last_period
+    text note
+    int8 venue_id
+    int8 toss_won_team_id
+    int8 winner_team_id
+    text draw_noresult
+    int8 first_umpire_id
+    int8 second_umpire_id
+    int8 tv_umpire_id
+    int8 referee_id
+    int8 man_of_match_id
+    int8 man_of_series_id
+    int4 total_overs_played
+    text elected
+    bool super_over
+    bool follow_on
+    int4 localteam_dl_score
+    numeric localteam_dl_overs
+    int4 localteam_dl_wickets
+    int4 visitorteam_dl_score
+    numeric visitorteam_dl_overs
+    int4 visitorteam_dl_wickets
+    int4 visitorteam_dl_total_overs
+    numeric rpc_overs
+    int4 rpc_target
+    timestamptz api_updated_at
+    bool is_published
+    bool is_active
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  livescore_snapshots {
+    int8 id
+    uuid uuid
+    int8 fixture_id
+    timestamptz snapshot_at
+    text status
+    bool is_live
+    text payload_hash
+    timestamptz created_at
+  }
+  fixtures ||--o{ fixture_balls : "fixture_id"
+  fixtures ||--o{ fixture_batting : "fixture_id"
+  fixtures ||--o{ fixture_bowling : "fixture_id"
+  fixtures ||--o{ fixture_inning_overs : "fixture_id"
+  fixtures ||--o{ fixture_lineups : "fixture_id"
+  fixtures ||--o{ fixture_odds : "fixture_id"
+  fixtures ||--o{ fixture_runs : "fixture_id"
+  fixtures ||--o{ fixture_scoreboards : "fixture_id"
+  fixtures ||--o{ fixture_weather : "fixture_id"
+  fixtures ||--o{ livescore_snapshots : "fixture_id"

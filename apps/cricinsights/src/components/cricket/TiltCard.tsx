@@ -1,0 +1,66 @@
+'use client';
+
+import { useRef } from 'react';
+import { round1 } from '@/lib/utils';
+
+export default function TiltCard({
+  children,
+  maskSrc,
+  className,
+}: {
+  children: React.ReactNode;
+  maskSrc?: string;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  const move = (e: React.MouseEvent) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+    el.style.transform = `perspective(900px) rotateX(${round1((0.5 - py) * 10)}deg) rotateY(${round1((px - 0.5) * 12)}deg)`;
+    el.style.setProperty('--mx', `${round1(px * 100)}%`);
+    el.style.setProperty('--my', `${round1(py * 100)}%`);
+  };
+
+  const leave = () => {
+    const el = ref.current;
+    if (el) el.style.transform = '';
+  };
+
+  return (
+    <div
+      ref={ref}
+      onMouseMove={move}
+      onMouseLeave={leave}
+      className={`group/tilt relative transition-transform duration-200 ease-out will-change-transform ${className ?? ''}`}
+    >
+      {children}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover/tilt:opacity-100"
+        style={{
+          background: `
+            linear-gradient(115deg,
+              transparent calc(var(--mx, 50%) - 22%),
+              rgba(255,255,255,.05) calc(var(--mx, 50%) - 9%),
+              rgba(255,255,255,.22) var(--mx, 50%),
+              rgba(255,255,255,.06) calc(var(--mx, 50%) + 9%),
+              transparent calc(var(--mx, 50%) + 20%)),
+            radial-gradient(120% 90% at var(--mx, 50%) var(--my, 50%), rgba(255,255,255,.10), transparent 60%)`,
+          mixBlendMode: 'screen',
+          ...(maskSrc
+            ? {
+                WebkitMaskImage: `url("${maskSrc}")`,
+                maskImage: `url("${maskSrc}")`,
+                WebkitMaskSize: '100% 100%',
+                maskSize: '100% 100%',
+              }
+            : {}),
+        }}
+      />
+    </div>
+  );
+}

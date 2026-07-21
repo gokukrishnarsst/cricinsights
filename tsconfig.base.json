@@ -2,7 +2,11 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@cricket-ai/database": ["libs/database/src/index.ts"]
+      "@cricket-ai/database": ["libs/database/src/index.ts"],
+      "@cricket-ai/mcp-server": ["libs/mcp-server/src/index.ts"],
+      "@cricket-ai/insight-engine": ["libs/insight-engine/src/index.ts"],
+      "@cricket-ai/ai-agent": ["libs/ai-agent/src/index.ts"],
+      "@cricket-ai/smart-router": ["libs/smart-router/src/index.ts"]
     },
     "composite": true,
     "declarationMap": true,

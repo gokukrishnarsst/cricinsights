@@ -16,7 +16,14 @@
     "db:migrate": "docker compose up -d postgres && nx run database:migrate-local",
     "db:logs": "docker compose logs -f postgres",
     "db:ps": "docker compose ps",
-    "dev:web": "nx dev cricinsights"
+    "dev:web": "nx dev cricinsights",
+    "mcp:http": "tsx libs/mcp-server/src/http.ts",
+    "mcp:http:start": "node libs/mcp-server/dist/http.js",
+    "eval:system": "tsx --tsconfig apps/cricinsights/tsconfig.json apps/cricinsights/scripts/system-eval/cli.ts",
+    "eval:chat": "tsx --tsconfig apps/cricinsights/tsconfig.json apps/cricinsights/scripts/chat-benchmark/cli.ts",
+    "eval:chat": "tsx --tsconfig apps/cricinsights/tsconfig.json apps/cricinsights/scripts/chat-benchmark/cli.ts",
+    "bedrock:chat": "tsx --tsconfig scripts/bedrock-chat/tsconfig.json scripts/bedrock-chat/cli.ts",
+    "insight-engine": "tsx libs/insight-engine/src/cli.ts"
   },
   "dependencies": {
     "aws-cdk-lib": "^2.260.0",

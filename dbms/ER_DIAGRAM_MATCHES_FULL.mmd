@@ -1,0 +1,219 @@
+%% matches schema — full columns (live DB)
+%% Data team diagram: cricket_ai_dev - cricket_ai_dev - matches.png
+%% Aliases: fixture_inning_overs = fixture_innings_runs, livescore_snapshots = fixture_snapshots
+%% Planned (not in DB): fixtures_analysis
+erDiagram
+  fixture_balls {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 fixture_id
+    int8 team_id
+    numeric ball_number
+    text scoreboard
+    int8 batsman_striker_id
+    int8 batsman_non_striker_id
+    int8 batsman_scorer_id
+    int8 bowler_id
+    int8 batsman_out_id
+    int8 catch_stump_player_id
+    int8 runout_by_player_id
+    int8 score_outcome_id
+    timestamptz api_updated_at
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  fixture_batting {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 fixture_id
+    int8 team_id
+    int8 player_id
+    int4 sort_order
+    bool is_active
+    text scoreboard
+    int4 runs_scored
+    int4 balls_faced
+    int4 fours
+    int4 sixes
+    numeric strike_rate
+    int8 wicket_outcome_id
+    int8 score_outcome_id
+    int8 catch_stump_player_id
+    int8 runout_by_player_id
+    int8 batsman_out_id
+    int8 bowling_player_id
+    int4 fow_score
+    numeric fow_balls
+    timestamptz api_updated_at
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  fixture_bowling {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 fixture_id
+    int8 team_id
+    int8 player_id
+    int4 sort_order
+    bool is_active
+    text scoreboard
+    numeric overs
+    int4 maidens
+    int4 runs_conceded
+    int4 wickets
+    int4 wides
+    int4 noballs
+    numeric economy_rate
+    timestamptz api_updated_at
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  fixture_inning_overs {
+    int8 id
+    uuid uuid
+    int8 fixture_id
+    int8 team_id
+    text scoreboard
+    int4 over_number
+    int4 runs_in_over
+    int4 wickets_in_over
+    int8 bowler_id
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  fixture_lineups {
+    int8 id
+    uuid uuid
+    int8 fixture_id
+    int8 team_id
+    int8 player_id
+    bool is_captain
+    bool is_wicketkeeper
+    bool is_substitute
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  fixture_odds {
+    int8 id
+    uuid uuid
+    int8 fixture_id
+    jsonb odds_json
+    timestamptz api_updated_at
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  fixture_runs {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 fixture_id
+    int8 team_id
+    int2 inning
+    int4 score
+    int4 wickets
+    numeric overs
+    text powerplay_1
+    text powerplay_2
+    text powerplay_3
+    timestamptz api_updated_at
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  fixture_scoreboards {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 fixture_id
+    int8 team_id
+    text scoreboard
+    text board_type
+    int4 wides
+    int4 noball_runs
+    int4 noball_balls
+    int4 byes
+    int4 leg_byes
+    int4 penalty
+    int4 total_runs
+    numeric overs
+    int4 wickets
+    timestamptz api_updated_at
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  fixture_weather {
+    int8 id
+    uuid uuid
+    int8 fixture_id
+    int2 report_sequence
+    jsonb weather_json
+    timestamptz api_updated_at
+    timestamptz created_at
+  }
+  fixtures {
+    int8 id
+    uuid uuid
+    int8 sportmonks_id
+    int8 league_id
+    int8 season_id
+    int8 stage_id
+    text round
+    int8 localteam_id
+    int8 visitorteam_id
+    timestamptz starting_at
+    text match_format
+    bool is_live
+    text status
+    text last_period
+    text note
+    int8 venue_id
+    int8 toss_won_team_id
+    int8 winner_team_id
+    text draw_noresult
+    int8 first_umpire_id
+    int8 second_umpire_id
+    int8 tv_umpire_id
+    int8 referee_id
+    int8 man_of_match_id
+    int8 man_of_series_id
+    int4 total_overs_played
+    text elected
+    bool super_over
+    bool follow_on
+    int4 localteam_dl_score
+    numeric localteam_dl_overs
+    int4 localteam_dl_wickets
+    int4 visitorteam_dl_score
+    numeric visitorteam_dl_overs
+    int4 visitorteam_dl_wickets
+    int4 visitorteam_dl_total_overs
+    numeric rpc_overs
+    int4 rpc_target
+    timestamptz api_updated_at
+    bool is_published
+    bool is_active
+    timestamptz created_at
+    timestamptz updated_at
+  }
+  livescore_snapshots {
+    int8 id
+    uuid uuid
+    int8 fixture_id
+    timestamptz snapshot_at
+    text status
+    bool is_live
+    text payload_hash
+    timestamptz created_at
+  }
+  fixtures ||--o{ fixture_balls : "fixture_id"
+  fixtures ||--o{ fixture_batting : "fixture_id"
+  fixtures ||--o{ fixture_bowling : "fixture_id"
+  fixtures ||--o{ fixture_inning_overs : "fixture_id"
+  fixtures ||--o{ fixture_lineups : "fixture_id"
+  fixtures ||--o{ fixture_odds : "fixture_id"
+  fixtures ||--o{ fixture_runs : "fixture_id"
+  fixtures ||--o{ fixture_scoreboards : "fixture_id"
+  fixtures ||--o{ fixture_weather : "fixture_id"
+  fixtures ||--o{ livescore_snapshots : "fixture_id"
