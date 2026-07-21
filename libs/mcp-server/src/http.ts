@@ -8,6 +8,9 @@ import { createMcpServer, MCP_SERVER_NAME } from './server.js';
 
 const DEFAULT_PORT = 3000;
 const MCP_PATH = process.env.MCP_HTTP_PATH?.trim() || '/mcp';
+const MCP_ALLOWED_HOSTS = process.env.MCP_ALLOWED_HOSTS?.split(',')
+  .map((host) => host.trim())
+  .filter(Boolean);
 
 type McpHttpRequest = IncomingMessage & { body?: unknown };
 type McpHttpResponse = ServerResponse & {
@@ -41,7 +44,10 @@ function jsonRpcMethodNotAllowed(message: string) {
 }
 
 export async function startHttpMcpServer(): Promise<void> {
-  const app = createMcpExpressApp();
+  const app = createMcpExpressApp({
+    host: '0.0.0.0',
+    allowedHosts: MCP_ALLOWED_HOSTS?.length ? MCP_ALLOWED_HOSTS : undefined,
+  });
   const port = readPort();
 
   app.get('/healthz', (_req: McpHttpRequest, res: McpHttpResponse) => {

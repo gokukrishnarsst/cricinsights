@@ -11,3 +11,5 @@ services:
         value: production
       - key: MCP_HTTP_PATH
         value: /mcp
+      - key: MCP_ALLOWED_HOSTS
+        value: cricinsights.onrender.com
